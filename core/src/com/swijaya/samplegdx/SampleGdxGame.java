@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class SampleGdxGame extends Game {
@@ -27,22 +28,19 @@ public class SampleGdxGame extends Game {
             setPosition(position.x, position.y);
             setBounds(getX(), getY(), badLogicImg.getWidth(), badLogicImg.getHeight());
 
-            addListener(new InputListener() {
-                // x and y are relative to the bottom-left of the actor's bounding box!
+            addListener(new DragListener() {
                 @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    Gdx.app.debug(TAG, "[badLogicActor] touchDown: (" + x + "," + y + ")");
-                    return true;
+                public void dragStart(InputEvent event, float x, float y, int pointer) {
+                    Gdx.app.debug(TAG, "[badLogicActor] dragStart: (" + x + "," + y + ")");
                 }
 
                 @Override
-                public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                    // TODO
+                public void drag(InputEvent event, float x, float y, int pointer) {
                 }
 
                 @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    Gdx.app.debug(TAG, "[badLogicActor] touchUp: (" + x + "," + y + ")");
+                public void dragStop(InputEvent event, float x, float y, int pointer) {
+                    Gdx.app.debug(TAG, "[badLogicActor] dragStop: (" + x + "," + y + ")");
                 }
             });
         }
