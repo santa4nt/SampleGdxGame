@@ -28,19 +28,35 @@ public class SampleGdxGame extends Game {
             setPosition(position.x, position.y);
             setBounds(getX(), getY(), badLogicImg.getWidth(), badLogicImg.getHeight());
 
+            // using a DragListener instead of raw InputListener gives us some fudge factor handling in determining
+            // when "dragging" start relative to a touch point; the parent DragListener handles that, and defines
+            // entry points for our (anonymous) subclass to implement for the drag event callbacks
             addListener(new DragListener() {
                 @Override
                 public void dragStart(InputEvent event, float x, float y, int pointer) {
                     Gdx.app.debug(TAG, "[badLogicActor] dragStart: (" + x + "," + y + ")");
+                    reposition(x, y);
                 }
 
                 @Override
                 public void drag(InputEvent event, float x, float y, int pointer) {
+                    reposition(x, y);
                 }
 
                 @Override
                 public void dragStop(InputEvent event, float x, float y, int pointer) {
                     Gdx.app.debug(TAG, "[badLogicActor] dragStop: (" + x + "," + y + ")");
+                    reposition(x, y);
+                }
+
+                private void reposition(float x, float y) {
+                    // `x` and `y` are coordinates in the actor's coordinate space, relative to its bottom-left corner!
+                    // so we compute `dx` and `dy` from the touch point `x` and `y` and use them as offsets relative
+                    // to the actor's coordinates in the stage's coordinate space
+                    float dx = x - badLogicImg.getWidth() * 0.5f;
+                    float dy = y - badLogicImg.getHeight() * 0.5f;
+                    // setPosition() arguments are in the stage's coordinate space
+                    setPosition(getX() + dx, getY() + dy);
                 }
             });
         }
