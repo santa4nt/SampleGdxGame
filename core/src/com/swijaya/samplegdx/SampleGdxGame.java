@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -17,17 +18,26 @@ public class SampleGdxGame extends Game {
     public class BadLogicSpriteActor extends Actor {
 
         private Texture badLogicImg;
+        private Vector2 position;
 
         public BadLogicSpriteActor() {
             badLogicImg = new Texture("badlogic.jpg");
-            setPosition(0, 0);
+            position = new Vector2(0, 0);
+
+            setPosition(position.x, position.y);
             setBounds(getX(), getY(), badLogicImg.getWidth(), badLogicImg.getHeight());
 
             addListener(new InputListener() {
+                // x and y are relative to the bottom-left of the actor's bounding box!
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     Gdx.app.debug(TAG, "[badLogicActor] touchDown: (" + x + "," + y + ")");
                     return true;
+                }
+
+                @Override
+                public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                    // TODO
                 }
 
                 @Override
